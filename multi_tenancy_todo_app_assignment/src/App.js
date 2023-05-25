@@ -8,7 +8,7 @@ import { useCallback, useState } from "react";
 
 function App() {
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
 
 
  
