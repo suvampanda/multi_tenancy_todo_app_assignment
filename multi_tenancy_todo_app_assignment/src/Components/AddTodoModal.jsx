@@ -72,7 +72,9 @@ const AddTodoModal = ({ openAddTodoModal, setOpenAddTodoModal }) => {
             required
           >
             <MenuItem value={0}>Pending</MenuItem>
-            <MenuItem value={1}>Completed</MenuItem>
+            {/* <MenuItem value={1}>Completed</MenuItem> */}
+            <MenuItem value={2}>In-Progress</MenuItem>
+            {/* <MenuItem value={3}>Late</MenuItem> */}
           </Select>
         </FormControl>
       </DialogContent>

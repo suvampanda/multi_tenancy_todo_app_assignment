@@ -151,18 +151,17 @@ const WrongPass = () => {
   return { type: actionTypes.WRONG_PASSWORD };
 };
 
-const Login_FN = ({ email, password, userType }) => {
+const Login_FN = ({ email, password }) => {
   return async (dispatch) => {
     try {
       dispatch(login_req());
-      const switchUrl = userType === "user" ? "user/login" : "client/login";
+      
 
       let data = await axios.post(
-        `https://ill-cyan-cricket-cap.cyclic.app/${switchUrl}`,
+        `https://ill-cyan-cricket-cap.cyclic.app/bothlogin/login`,
         {
           email,
           password,
-          userType,
         }
       );
       data = await data.data;

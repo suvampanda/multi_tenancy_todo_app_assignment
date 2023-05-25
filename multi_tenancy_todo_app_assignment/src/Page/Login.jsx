@@ -45,8 +45,7 @@ const Login = () => {
   const validateForm = () => {
     return (
       formData.email.length > 0 &&
-      formData.password.length > 0 &&
-      formData.userType !== ""
+      formData.password.length > 0 
     );
   };
 
@@ -133,22 +132,6 @@ const Login = () => {
               ),
             }}
           />
-        </FormControl>
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="user-type-label">User Type</InputLabel>
-          <Select
-            labelId="user-type-label"
-            id="user-type"
-            name="userType"
-            label="User-Type"
-            value={formData.userType}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="client">Client</MenuItem>
-            <MenuItem value="user">User</MenuItem>
-          </Select>
-          <FormHelperText>Select your user type</FormHelperText>
         </FormControl>
         {!store.loading ? (
           <Button
