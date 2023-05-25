@@ -27,7 +27,7 @@ import { Assignment, Delete, Edit } from "@mui/icons-material";
 import { deleteTodo, updateTodo } from "../HOF/TodoReducer/todo.action";
 import AddTodoModal from "./AddTodoModal";
 import EmailModal from "./AssignUserTodoToAnathorUser.jsx";
-// import DataVisualization from "./DataVisualization";
+import DataVisualization from "./DataVisualization";
 
 const TodoList = () => {
   const todo = useSelector((state) => state.todoReducer.todos);
@@ -113,14 +113,14 @@ const TodoList = () => {
     setTodos(updatedTodos);
     setDraggedItemId(null); // Reset the draggedItemId state
   };
-//   const topics = todos.map((x) => x.status);
-//   // console.log(topics);
-//   const topicCounts = {};
-//   topics?.forEach((t) => {
-//     if (topicCounts[t]) topicCounts[t]++;
-//     else topicCounts[t] = 1;
-//   });
-//   const values = Object.values(topicCounts);
+    const topics = todos.map((x) => x.status);
+    // console.log(topics);
+    const topicCounts = {};
+    topics?.forEach((t) => {
+      if (topicCounts[t]) topicCounts[t]++;
+      else topicCounts[t] = 1;
+    });
+    const values = Object.values(topicCounts);
   return (
     <Box>
       <Typography fontSize="70px" color="grey" margin="22px">
@@ -160,7 +160,9 @@ const TodoList = () => {
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, todo.id)}
                   style={{
-                    backgroundColor: draggedItemId === todo.id ? "white" : "white",fontWeight:"500" // Apply background color when item is being dragged
+                    backgroundColor:
+                      draggedItemId === todo.id ? "white" : "white",
+                    fontWeight: "500", // Apply background color when item is being dragged
                   }}
                 >
                   <TableCell>{todo.id}</TableCell>
@@ -169,11 +171,11 @@ const TodoList = () => {
 
                   <TableCell
                     style={{
-                      color: todo.status === 0 ? "red" : "green",
+                      color: todo.status === 0 ? "orange" :  todo.status === 1 ? "green" :  todo.status === 2 ? "blue" : "red",
                       fontWeight: 600,
                     }}
                   >
-                    {todo.status === 0 ? "Pending" : "Completed"}
+                    {todo.status === 0 ? "Pending" : todo.status === 1 ? "Completed" : todo.status === 2 ? "In-Progress" : "Late"}
                   </TableCell>
                   <TableCell width="40%" align="center">
                     <Box display="flex" justifyContent="space-between">
@@ -190,7 +192,7 @@ const TodoList = () => {
                         <Delete />
                       </IconButton>
 
-                      {role === "user" && (
+                      
                         <Button
                           variant="contained"
                           startIcon={<Assignment />}
@@ -198,7 +200,7 @@ const TodoList = () => {
                         >
                           Assign
                         </Button>
-                      )}
+                      
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -244,6 +246,8 @@ const TodoList = () => {
             >
               <MenuItem value={0}>Pending</MenuItem>
               <MenuItem value={1}>Completed</MenuItem>
+              <MenuItem value={2}>In-Progress</MenuItem>
+              <MenuItem value={3}>Late</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
@@ -264,7 +268,7 @@ const TodoList = () => {
         openAddTodoModal={openAddTodoModal}
       />
       {/* <PieChart values={PieValues} lebels={PieLabels} /> */}
-//       <DataVisualization values={values} />
+      <DataVisualization values={values} />
       <EmailModal
         open={open}
         setOpen={setOpen}
