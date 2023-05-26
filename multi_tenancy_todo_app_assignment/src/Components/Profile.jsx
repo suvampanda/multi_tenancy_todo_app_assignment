@@ -16,6 +16,8 @@ import {
 import { useState } from "react";
 
 import AddPhotoAlternateTwoToneIcon from "@mui/icons-material/AddPhotoAlternateTwoTone";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfile } from "../HOF/AuthReducer/auth.action";
 
 const style = {
   position: "absolute",
@@ -34,6 +36,9 @@ export default function Profile() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const profileData = useSelector((store) => store.authReducer.profileData);
+  // console.log(profileData, "profiledata");
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -45,22 +50,31 @@ export default function Profile() {
   );
   const fileInputRef = React.useRef(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  React.useEffect(() => {
+    dispatch(fetchProfile());
+  }, []);
 
+  const handleChange = (e) => {
+    // const { name, value } = e.target;
+
+    // setFormData((prevFormData) => ({
+    //   ...prevFormData,
+    //   [name]: value,
+    // }));
+     
+    
+     
   };
 
   const handleSubmit = (e) => {
-    if(formData.firstName =="" || formData.lastName=="" || formData.password==""){
-        alert("fill all the details")
-    }
-    else{
-        setOpen(false)
+    if (
+      formData.firstName == "" ||
+      formData.lastName == "" ||
+      formData.password == ""
+    ) {
+      alert("fill all the details");
+    } else {
+      setOpen(false);
     }
   };
 
@@ -119,8 +133,7 @@ export default function Profile() {
             <Grid gridTemplateColumns={"repeat(2,1fr)"} item xs={12}>
               <TextField
                 name="firstName"
-                placeholder="Enter firstname"
-                value={formData.firstName}
+                placeholder={profileData.firstname}
                 onChange={handleChange}
                 fullWidth
               />
@@ -128,8 +141,7 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="lastName"
-                placeholder="Enter lastname"
-                value={formData.lastName}
+                placeholder={profileData.lastname}
                 onChange={handleChange}
                 fullWidth
               />
@@ -137,17 +149,17 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="email"
-                value="adarsh474747@gmail.com"
+                value={profileData.email}
                 fullWidth
                 InputProps={{ readOnly: true }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="password"
-                placeholder="Enter password"
-                value={formData.password}
+                
+                value={profileData.password}
                 onChange={handleChange}
+                type="password"
                 fullWidth
               />
             </Grid>
