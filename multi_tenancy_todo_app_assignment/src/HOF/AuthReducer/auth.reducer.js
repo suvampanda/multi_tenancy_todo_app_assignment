@@ -8,7 +8,8 @@ const intstate = {
   userLogin:false,
   AccNotFound:false,
   loginToken:"",
-  wrongPass:false
+  wrongPass:false,
+  profileData: {}
 
 };
 
@@ -76,6 +77,20 @@ const reducer = (state = intstate, action) => {
       localStorage.removeItem("user_email")
       localStorage.removeItem("role")  
       return {...state, userToken:"",userLogin:false }
+
+      case actionTypes.FETCH_PROFILE_SUCCESS:
+        return {
+          ...state,
+          profileData: action.payload,
+          error: false,
+        };
+      case actionTypes.FETCH_PROFILE_FAILURE:
+        return {
+          ...state,
+          profileData: {},
+          error: action.payload,
+        };
+
 
     default:
       return state;
