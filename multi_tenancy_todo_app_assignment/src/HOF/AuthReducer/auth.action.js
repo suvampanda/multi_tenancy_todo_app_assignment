@@ -189,6 +189,25 @@ localStorage.setItem("role",data.role)
     }
   };
 };
+
+export const fetchProfileSuccess = (profileData) => {
+  return { type:actionTypes.FETCH_PROFILE_SUCCESS,payload: profileData}
+  };
+  
+  export const fetchProfileFailure = (error) => {
+    return {type:actionTypes.FETCH_PROFILE_FAILURE,payload: error}
+  };
+  
+  export const fetchProfile = () => {
+    return (dispatch) => {
+      // Make API call to fetch profile data
+      fetch('/api/profile')
+        .then((response) => response.json())
+        .then((data) => dispatch(fetchProfileSuccess(data)))
+        .catch((error) => dispatch(fetchProfileFailure(error)));
+    };
+  };
+  
 const logout_FN=()=>{
   return {type:actionTypes.LOGOUT}
 }
