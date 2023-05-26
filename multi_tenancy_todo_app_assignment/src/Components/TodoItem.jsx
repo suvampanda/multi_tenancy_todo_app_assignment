@@ -37,14 +37,13 @@ import { deleteTodo, updateTodo } from "../HOF/TodoReducer/todo.action";
 import AddTodoModal from "./AddTodoModal";
 import EmailModal from "./AssignUserTodoToAnathorUser.jsx";
 import DataVisualization from "./DataVisualization";
+import Pagination from "./Pagination";
 
-const TodoList = () => {
+const TodoList = ({loading,page,setpage,totalPages}) => {
   const todo = useSelector((state) => state.todoReducer.todos);
   const [todos, setTodos] = useState(todo);
   const [view, setView] = useState("list"); // Added todos state
-  const loading = useSelector((state) => state.todoReducer.loading);
   const auth = useSelector((state) => state.authReducer);
-  console.log(todos);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddTodoModal, setOpenAddTodoModal] = useState(false);
   const [editTodo, setEditTodo] = useState(null);
@@ -374,6 +373,8 @@ const TodoList = () => {
           </Box>
         </Box>
       )}
+
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setpage} />  
       <Dialog open={openEditModal} onClose={handleCloseEditModal}>
         <DialogTitle>Edit Todo</DialogTitle>
         <DialogContent>

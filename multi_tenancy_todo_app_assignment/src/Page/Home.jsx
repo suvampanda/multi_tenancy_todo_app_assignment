@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <div>
-<TodoList todos={todo.todos} loading={todo.loading} auth={auth}/>
+<TodoList todo={todo} loading={todo.loading} auth={auth} setpage={setpage} totalPages={todo.pagination.totalPages}  page={page}/>
     </div>
   )
 }
