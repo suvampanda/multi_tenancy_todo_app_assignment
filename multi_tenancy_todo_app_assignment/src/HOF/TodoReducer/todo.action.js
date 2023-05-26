@@ -19,11 +19,6 @@ import {
 // Fetch all todos action
 export const fetchTodos = (page = 1, limit = 10) => {
   return async (dispatch) => {
-
-
-
-
-    console.log("mkjij",process.env.REACT_APP_BASE_API)
     dispatch({ type: FETCH_TODOS_REQUEST });
     let url;
     try {
@@ -36,7 +31,7 @@ export const fetchTodos = (page = 1, limit = 10) => {
         url = "todo/alltodo";
       }
       const response = await fetch(
-        `https://ill-cyan-cricket-cap.cyclic.app/${url}?limit=${limit}&page=${page}`,
+        `http://localhost:8090/${url}?limit=${limit}&page=${page}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -47,8 +42,11 @@ export const fetchTodos = (page = 1, limit = 10) => {
       );
       const data = await response.json();
       console.log(data);
+
+      const alldetails={...data,currentPage:page,itemsPerPage:limit}
+
       if (!data.error&&!data.message) {
-        dispatch({ type: FETCH_TODOS_SUCCESS, payload: data });
+        dispatch({ type: FETCH_TODOS_SUCCESS, payload: alldetails });
       } else {
         dispatch({ type: FETCH_TODOS_FAILURE, error: "Failed to fetch todos" });
       }

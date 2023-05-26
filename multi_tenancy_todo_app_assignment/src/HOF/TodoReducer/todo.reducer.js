@@ -20,6 +20,12 @@ const initialState = {
   todos: [],
   loading: false,
   error: null,
+  pagination: {
+    totalItems: 0,
+    totalPages: 0,
+    currentPage: 1,
+    itemsPerPage: 10,
+  },
 };
 
 const todoReducer = (state = initialState, action) => {
@@ -28,6 +34,7 @@ const todoReducer = (state = initialState, action) => {
     case ADD_TODO_REQUEST:
     case DELETE_TODO_REQUEST:
     case UPDATE_TODO_REQUEST:
+    case ASSIGN_TODO_TO_USER_REQUEST:
       return {
         ...state,
         loading: true,
@@ -36,7 +43,14 @@ const todoReducer = (state = initialState, action) => {
     case FETCH_TODOS_SUCCESS:
       return {
         ...state,
-        todos: action.payload,
+        todos: action.payload.results,
+        pagination: {
+          ...state.pagination,
+          totalItems: action.payload.totalCount,
+          totalPages: action.payload.totalPages,
+          currentPage: action.payload.currentPage,
+          itemsPerPage: action.payload.itemsPerPage,
+        },
         loading: false,
         error: null,
       };
@@ -44,6 +58,10 @@ const todoReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: [...state.todos, action.payload],
+        pagination: {
+          ...state.pagination,
+          totalItems: state.pagination.totalItems + 1,
+        },
         loading: false,
         error: null,
       };
@@ -51,11 +69,15 @@ const todoReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload),
+        pagination: {
+          ...state.pagination,
+          totalItems: state.pagination.totalItems - 1,
+        },
         loading: false,
         error: null,
       };
     case UPDATE_TODO_SUCCESS:
-      let updatedtodo = state.todos.map((ele) => {
+      let updatedTodo = state.todos.map((ele) => {
         if (ele.id == action.payload.id) {
           ele = action.payload;
           return ele;
@@ -65,40 +87,30 @@ const todoReducer = (state = initialState, action) => {
       });
       return {
         ...state,
-        todos: updatedtodo,
+        todos: updatedTodo,
         loading: false,
         error: null,
+      };
+    case ASSIGN_TODO_TO_USER_SUCCESS:
+      // Filter out the assigned todo from the todos array
+      const updatedTodos = state.todos.filter(
+        (todo) => todo.id !== action.payload
+      );
+
+      return {
+        ...state,
+        loading: false,
+        todos: updatedTodos,
       };
     case FETCH_TODOS_FAILURE:
     case ADD_TODO_FAILURE:
     case DELETE_TODO_FAILURE:
     case UPDATE_TODO_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-
-      case ASSIGN_TODO_TO_USER_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null
-      };
-    case ASSIGN_TODO_TO_USER_SUCCESS:
-      // Filter out the assigned todo from the todos array
-      const updatedTodos = state.todos.filter(todo => todo.id !== action.payload);
-
-      return {
-        ...state,
-        loading: false,
-        todos: updatedTodos
-      };
     case ASSIGN_TODO_TO_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     default:
       return state;
