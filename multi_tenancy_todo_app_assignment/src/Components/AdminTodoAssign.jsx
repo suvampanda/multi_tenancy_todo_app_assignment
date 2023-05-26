@@ -17,7 +17,7 @@ export default function AsminAssignTodo({ queryHandeler }) {
     const token = localStorage.getItem("login_token");
     console.log(token);
 
-    return fetch("https://ill-cyan-cricket-cap.cyclic.app/user/usertouser", {
+    return fetch("http://localhost:8090/user/suggestion", {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -29,7 +29,7 @@ export default function AsminAssignTodo({ queryHandeler }) {
   useEffect(() => {
     getData()
       .then((res) => {
-        console.log(res);
+        console.log(res, "res");
         setData(res);
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ export default function AsminAssignTodo({ queryHandeler }) {
           })
           .map((elm) => {
             return elm.email;
-          });
+          }).filter((email)=>email!==localStorage.getItem("user_email"));
       if (!newSuggestion) {
         const dumyData = ["user@example.com", "client@example.com"];
         setSuggestion(dumyData);
