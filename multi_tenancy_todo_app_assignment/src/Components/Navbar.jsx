@@ -9,16 +9,13 @@ import {
     Box
   } from "@mui/material";
   
-  import {
-    Search,
-    AccessTime,
-    Notifications,
-  } from "@mui/icons-material";
+
   
   import { useDispatch, useSelector } from "react-redux";
   import {useNavigate} from "react-router-dom"
   import { useEffect, useState } from "react";
   import { logout_FN } from "../HOF/AuthReducer/auth.action";
+import Profile from "./Profile";
   const Navbar = () => {
     const auth=useSelector((store)=>store.authReducer)
     let role=localStorage.getItem("role")
@@ -90,6 +87,7 @@ navigate('/login')
               <MenuItem value={user_email}>
                 <Typography>{user_email}</Typography>
               </MenuItem>
+              <Profile/> 
               <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Select>
           </FormControl>
