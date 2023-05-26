@@ -22,8 +22,17 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Paper,
+  Grid,
+  CssBaseline,
 } from "@mui/material";
-import { Assignment, Delete, Edit } from "@mui/icons-material";
+import {
+  Assignment,
+  Delete,
+  Edit,
+  FormatListBulleted,
+  GridOn,
+} from "@mui/icons-material";
 import { deleteTodo, updateTodo } from "../HOF/TodoReducer/todo.action";
 import AddTodoModal from "./AddTodoModal";
 import EmailModal from "./AssignUserTodoToAnathorUser.jsx";
@@ -31,7 +40,8 @@ import DataVisualization from "./DataVisualization";
 
 const TodoList = () => {
   const todo = useSelector((state) => state.todoReducer.todos);
-  const [todos, setTodos] = useState(todo); // Added todos state
+  const [todos, setTodos] = useState(todo);
+  const [view, setView] = useState("list"); // Added todos state
   const loading = useSelector((state) => state.todoReducer.loading);
   const auth = useSelector((state) => state.authReducer);
   console.log(todos);
@@ -113,72 +123,230 @@ const TodoList = () => {
     setTodos(updatedTodos);
     setDraggedItemId(null); // Reset the draggedItemId state
   };
-    const topics = todos.map((x) => x.status);
-    // console.log(topics);
-    const topicCounts = {};
-    topics?.forEach((t) => {
-      if (topicCounts[t]) topicCounts[t]++;
-      else topicCounts[t] = 1;
-    });
-    const values = Object.values(topicCounts);
+  const changeView = () => {
+    if (view === "list") setView("grid");
+    else setView("list");
+  };
+  const topics = todos.map((x) => x.status);
+  // console.log(topics);
+  const arraySize = 4;
+  let values = Array.from({ length: arraySize }, () => 0);
+  topics?.forEach((t) => {
+    values[t]++;
+  });
+
   return (
     <Box>
-      <Typography fontSize="70px" color="grey" margin="22px">
-        {role.toUpperCase()} TABLE
-      </Typography>
-      <TableContainer
-        style={{
-          height: "400px",
-          maxWidth: 800,
-          margin: "auto",
-          marginTop: "40px",
-          p: 4,
-          border: "2px solid",
-          borderColor: "#00d5fa",
-          borderRadius: "7px",
-          overflowY: "scroll",
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: "40px",
+          color: "grey",
+          margin: "22px",
+          fontFamily: "Arial, sans-serif",
+          textTransform: "uppercase",
         }}
       >
-        {loading && <LinearProgress />}
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {todos.length > 0 &&
-              todos.map((todo) => (
-                <TableRow
-                  key={todo.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, todo.id)}
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, todo.id)}
-                  style={{
-                    backgroundColor:
-                      draggedItemId === todo.id ? "white" : "white",
-                    fontWeight: "500", // Apply background color when item is being dragged
-                  }}
-                >
-                  <TableCell>{todo.id}</TableCell>
-                  <TableCell>{todo.title}</TableCell>
-                  <TableCell>{todo.description}</TableCell>
-
-                  <TableCell
+        {role.toUpperCase()} TABLE
+      </Typography>
+      <Box>
+        <Button
+          style={{ marginRight: "20px" }}
+          variant="contained"
+          startIcon={<Assignment />}
+          onClick={() => setOpenAddTodoModal(true)}
+        >
+          ADD TODO
+        </Button>
+        {"  "}
+        <Button
+          style={{ marginLeft: "20px" }}
+          variant="contained"
+          startIcon={view === "list" ? <GridOn /> : <FormatListBulleted />}
+          onClick={changeView}
+        >
+          {view === "list" ? "GRID VIEW" : "LIST VIEW"}
+        </Button>
+      </Box>
+      {view === "list" ? (
+        <TableContainer
+          style={{
+            height: "400px",
+            maxWidth: 800,
+            margin: "auto",
+            marginTop: "40px",
+            p: 4,
+            border: "2px solid",
+            borderColor: "#00d5fa",
+            borderRadius: "7px",
+            overflowY: "scroll",
+          }}
+        >
+          {loading && <LinearProgress />}
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {todos.length > 0 &&
+                todos.map((todo) => (
+                  <TableRow
+                    key={todo.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, todo.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, todo.id)}
                     style={{
-                      color: todo.status === 0 ? "orange" :  todo.status === 1 ? "green" :  todo.status === 2 ? "blue" : "red",
-                      fontWeight: 600,
+                      backgroundColor:
+                        draggedItemId === todo.id ? "white" : "white",
+                      fontWeight: "500", // Apply background color when item is being dragged
                     }}
                   >
-                    {todo.status === 0 ? "Pending" : todo.status === 1 ? "Completed" : todo.status === 2 ? "In-Progress" : "Late"}
-                  </TableCell>
-                  <TableCell width="40%" align="center">
-                    <Box display="flex" justifyContent="space-between">
+                    <TableCell>{todo.id}</TableCell>
+                    <TableCell>{todo.title}</TableCell>
+                    <TableCell>{todo.description}</TableCell>
+
+                    <TableCell
+                      style={{
+                        color:
+                          todo.status === 0
+                            ? "orange"
+                            : todo.status === 1
+                            ? "green"
+                            : todo.status === 2
+                            ? "blue"
+                            : "red",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {todo.status === 0
+                        ? "Pending"
+                        : todo.status === 1
+                        ? "Completed"
+                        : todo.status === 2
+                        ? "In-Progress"
+                        : "Late"}
+                    </TableCell>
+                    <TableCell width="40%" align="center">
+                      <Box display="flex" justifyContent="space-between">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleOpenEditModal(todo)}
+                        >
+                          <Edit />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => handleDeleteTodo(todo.id)}
+                        >
+                          <Delete />
+                        </IconButton>
+
+                        <Button
+                          variant="contained"
+                          startIcon={<Assignment />}
+                          onClick={() => handleAssignTodo(todo.id)}
+                        >
+                          Assign
+                        </Button>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start", // Align blocks to top-left
+            height: "400px",
+            overflowY: "scroll",
+            maxWidth: 800,
+            margin: "auto",
+            marginTop: "40px",
+            p: 4,
+            border: "2px solid",
+            borderColor: "#00d5fa",
+            borderRadius: "7px",
+            scrollbarWidth: "thin",
+            scrollbarColor: "#888 #f1f1f1",
+          }}
+        >
+          <CssBaseline />
+          <Box>
+            <Grid container spacing={2}>
+              {todos.map((todo) => (
+                <Grid
+                  item
+                  xs={4} // Adjust the width to keep a constant block size
+                  key={todo.id}
+                  sx={{
+                    fontWeight: "500",
+                    display: "flex",
+                    justifyContent: "flex-start", // Align block content to top-left
+                    paddingTop: "8px", // Add top padding for alignment
+                  }}
+                >
+                  <Paper
+                    sx={{
+                      p: 2,
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ mb: 1 }}>
+                      {todo.title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        mb: 1,
+                        lineHeight: "1.2rem",
+                        maxHeight: "2.4rem",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {todo.description}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        mb: 2,
+                        color:
+                          todo.status === 0
+                            ? "orange"
+                            : todo.status === 1
+                            ? "green"
+                            : todo.status === 2
+                            ? "blue"
+                            : "red",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {todo.status === 0
+                        ? "Pending"
+                        : todo.status === 1
+                        ? "Completed"
+                        : todo.status === 2
+                        ? "In-Progress"
+                        : "Late"}
+                    </Typography>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <IconButton
                         aria-label="edit"
                         onClick={() => handleOpenEditModal(todo)}
@@ -192,30 +360,20 @@ const TodoList = () => {
                         <Delete />
                       </IconButton>
 
-                      
-                        <Button
-                          variant="contained"
-                          startIcon={<Assignment />}
-                          onClick={() => handleAssignTodo(todo.id)}
-                        >
-                          Assign
-                        </Button>
-                      
+                      <IconButton
+                        aria-label="assign"
+                        onClick={() => handleAssignTodo(todo.id)}
+                      >
+                        <Assignment />
+                      </IconButton>
                     </Box>
-                  </TableCell>
-                </TableRow>
+                  </Paper>
+                </Grid>
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button
-        style={{ marginTop: "20px" }}
-        variant="contained"
-        startIcon={<Assignment />}
-        onClick={() => setOpenAddTodoModal(true)}
-      >
-        ADD TODO
-      </Button>
+            </Grid>
+          </Box>
+        </Box>
+      )}
       <Dialog open={openEditModal} onClose={handleCloseEditModal}>
         <DialogTitle>Edit Todo</DialogTitle>
         <DialogContent>
