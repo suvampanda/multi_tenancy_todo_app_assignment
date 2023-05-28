@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import TodoList from '../Components/TodoItem';
 import { fetchTodos } from '../HOF/TodoReducer/todo.action';
+import { fetchProfile } from '../HOF/AuthReducer/auth.action';
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
 
     useEffect(() => {
       dispatch(fetchTodos(page)); // Fetching todos when the page changes
+      dispatch(fetchProfile())
     }, [page]);
 
   return (

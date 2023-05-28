@@ -24,7 +24,7 @@ const Register_FN = ({ firstname, lastname, email, password }) => {
 
     try {
       let data = await axios.post(
-        `https://ill-cyan-cricket-cap.cyclic.app/client/register`,
+        `http://localhost:8090/client/register`,
         {
           firstname,
           lastname,
@@ -76,7 +76,7 @@ const Login_FN = ({ email, password }) => {
       dispatch(login_req());
 
       let data = await axios.post(
-        `https://ill-cyan-cricket-cap.cyclic.app/bothlogin/login`,
+        `http://localhost:8090/bothlogin/login`,
         {
           email,
           password,
@@ -84,7 +84,7 @@ const Login_FN = ({ email, password }) => {
       );
       data = await data.data;
 
-      console.log(data, "data");
+      console.log(data, "login data");
       if (data.message) {
         localStorage.setItem("role", data.role);
         dispatch(login_success(data.token));
@@ -116,18 +116,19 @@ export const fetchProfileFailure = (error) => {
 export const fetchProfile = () => {
   return (dispatch) => {
     // Make API call to fetch profile data
-    fetch("http://localhost:8090/user/getuser", {
+    return fetch("http://localhost:8090/user/getuserdetail", {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        email:localStorage.getItem("user_email"),
+        email: localStorage.getItem("user_email"),
         Authorization: localStorage.getItem("login_token"),
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data,"data");
-        dispatch(fetchProfileSuccess(data?.other))})
+        console.log(data.other, "datafsdafdsf");
+        dispatch(fetchProfileSuccess(data?.other));
+      })
       .catch((error) => dispatch(fetchProfileFailure(error)));
   };
 };

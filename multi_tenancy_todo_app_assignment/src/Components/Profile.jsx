@@ -37,11 +37,11 @@ export default function Profile() {
   const handleClose = () => setOpen(false);
 
   const profileData = useSelector((store) => store.authReducer.profileData);
-  // console.log(profileData, "profiledata");
+  console.log(profileData, "profiledata");
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     password: "",
   });
 
@@ -51,47 +51,52 @@ export default function Profile() {
   const fileInputRef = React.useRef(null);
 
   React.useEffect(() => {
-    dispatch(fetchProfile());
+    setFormData(profileData);
   }, []);
 
   const handleChange = (e) => {
-    // const { name, value } = e.target;
+    const { name, value } = e.target;
 
-    // setFormData((prevFormData) => ({
-    //   ...prevFormData,
-    //   [name]: value,
-    // }));
-     
-    
-     
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handelUpdateData = (data) => {
+    console.log(data,"data patch req");
+    fetch("http://localhost:8090/user/updateuserinfo", {
+      method: "PATCH",
+      body: JSON.stringify({
+        firstname:data.firstname,
+        lastname:data.lastname
+        ,password:data.password
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("login_token"),
+        email:localStorage.getItem("user_email"),
+        role:localStorage.getItem("role")
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result, "rsult");
+      }).catch((error)=>{
+        console.log(error)
+      });
   };
 
   const handleSubmit = (e) => {
     if (
-      formData.firstName == "" ||
-      formData.lastName == "" ||
+      formData.firstname == "" ||
+      formData.lastname == "" ||
       formData.password == ""
     ) {
       alert("fill all the details");
     } else {
-      setOpen(false);
+      handelUpdateData(formData);
     }
-  };
-
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      setAvatarUrl(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleEditAvatarClick = () => {
-    fileInputRef.current.click();
   };
 
   return (
@@ -109,39 +114,21 @@ export default function Profile() {
             paddingLeft="30%"
             justify="center"
             alignItems="center"
-          >
-            <Avatar
-              alt="Avatar"
-              src={avatarUrl}
-              style={{ width: "100px", height: "100px" }}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleAvatarChange}
-            />
-            <Box width="20%" marginLeft="18%">
-              <IconButton onClick={handleEditAvatarClick} color="primary">
-                <AddPhotoAlternateTwoToneIcon color="action" />
-              </IconButton>
-            </Box>
-          </Grid>
+          ></Grid>
           <Grid container spacing={2} alignItems="center">
             <Grid item></Grid>
             <Grid gridTemplateColumns={"repeat(2,1fr)"} item xs={12}>
               <TextField
-                name="firstName"
-                placeholder={profileData.firstname}
+                name="firstname"
+                value={formData?.firstname}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="lastName"
-                placeholder={profileData.lastname}
+                name="lastname"
+                value={formData?.lastname}
                 onChange={handleChange}
                 fullWidth
               />
@@ -149,15 +136,15 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="email"
-                value={profileData.email}
+                value={profileData?.email}
                 fullWidth
                 InputProps={{ readOnly: true }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                
-                value={profileData.password}
+              name="password"
+                value={formData?.password}
                 onChange={handleChange}
                 type="password"
                 fullWidth
