@@ -72,7 +72,7 @@ export const addTodo = (todo) => {
       } else {
         url = "todo/addtodo";
       }
-      const response = await fetch(`https://ill-cyan-cricket-cap.cyclic.app/${url}`, {
+      const response = await fetch(`http://localhost:8090/${url}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const deleteTodo = (id) => {
         url = "todo/delete";
       }
       const response = await fetch(
-        `https://ill-cyan-cricket-cap.cyclic.app/${url}/${id}`,
+        `http://localhost:8090/${url}/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -144,7 +144,7 @@ export const updateTodo = (id, updatedTodo) => {
         url = "todo/update";
       }
       const response = await fetch(
-        `https://ill-cyan-cricket-cap.cyclic.app/${url}/${id}`,
+        `http://localhost:8090/${url}/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -182,7 +182,7 @@ export const assignTodoToUser = (todoId, mail) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
-        `https://ill-cyan-cricket-cap.cyclic.app/user/assignto/${todoId}`,
+        `http://localhost:8090/user/assignto/${todoId}`,
         {
           method: "PATCH",
           headers: {

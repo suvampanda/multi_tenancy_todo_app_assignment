@@ -16,6 +16,8 @@ import {
 import { useState } from "react";
 
 import AddPhotoAlternateTwoToneIcon from "@mui/icons-material/AddPhotoAlternateTwoTone";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfile } from "../HOF/AuthReducer/auth.action";
 
 const style = {
   position: "absolute",
@@ -34,9 +36,12 @@ export default function Profile() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const profileData = useSelector((store) => store.authReducer.profileData);
+  console.log(profileData, "profiledata");
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     password: "",
   });
 
@@ -45,39 +50,53 @@ export default function Profile() {
   );
   const fileInputRef = React.useRef(null);
 
+  React.useEffect(() => {
+    setFormData(profileData);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
+  };
 
+  const handelUpdateData = (data) => {
+    console.log(data,"data patch req");
+    fetch("http://localhost:8090/user/updateuserinfo", {
+      method: "PATCH",
+      body: JSON.stringify({
+        firstname:data.firstname,
+        lastname:data.lastname
+        ,password:data.password
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("login_token"),
+        email:localStorage.getItem("user_email"),
+        role:localStorage.getItem("role")
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result, "rsult");
+      }).catch((error)=>{
+        console.log(error)
+      });
   };
 
   const handleSubmit = (e) => {
-    if(formData.firstName =="" || formData.lastName=="" || formData.password==""){
-        alert("fill all the details")
+    if (
+      formData.firstname == "" ||
+      formData.lastname == "" ||
+      formData.password == ""
+    ) {
+      alert("fill all the details");
+    } else {
+      handelUpdateData(formData);
     }
-    else{
-        setOpen(false)
-    }
-  };
-
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      setAvatarUrl(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleEditAvatarClick = () => {
-    fileInputRef.current.click();
   };
 
   return (
@@ -95,41 +114,21 @@ export default function Profile() {
             paddingLeft="30%"
             justify="center"
             alignItems="center"
-          >
-            <Avatar
-              alt="Avatar"
-              src={avatarUrl}
-              style={{ width: "100px", height: "100px" }}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleAvatarChange}
-            />
-            <Box width="20%" marginLeft="18%">
-              <IconButton onClick={handleEditAvatarClick} color="primary">
-                <AddPhotoAlternateTwoToneIcon color="action" />
-              </IconButton>
-            </Box>
-          </Grid>
+          ></Grid>
           <Grid container spacing={2} alignItems="center">
             <Grid item></Grid>
             <Grid gridTemplateColumns={"repeat(2,1fr)"} item xs={12}>
               <TextField
-                name="firstName"
-                placeholder="Enter firstname"
-                value={formData.firstName}
+                name="firstname"
+                value={formData?.firstname}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="lastName"
-                placeholder="Enter lastname"
-                value={formData.lastName}
+                name="lastname"
+                value={formData?.lastname}
                 onChange={handleChange}
                 fullWidth
               />
@@ -137,17 +136,17 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="email"
-                value="adarsh474747@gmail.com"
+                value={profileData?.email}
                 fullWidth
                 InputProps={{ readOnly: true }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="password"
-                placeholder="Enter password"
-                value={formData.password}
+              name="password"
+                value={formData?.password}
                 onChange={handleChange}
+                type="password"
                 fullWidth
               />
             </Grid>
