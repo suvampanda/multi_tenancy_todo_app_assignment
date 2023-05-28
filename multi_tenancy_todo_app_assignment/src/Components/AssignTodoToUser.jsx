@@ -15,22 +15,31 @@ const AssignTodoToUser = ({ asignModal, setAsignModal, firstname, email }) => {
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
-    deadline: "",
+    deadline_time: "",
   });
   const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "deadline") {
+    if (name === "deadline_time") {
       const today = new Date().toISOString().split("T")[0];
+      const currentTime = new Date().toISOString().split("T")[1];
+      const selectedDateTime = value + "T" + currentTime + ".000Z";
       if (value < today) {
         return; // Ignore the change if the selected date is before today
       }
+      setTaskData((prevTaskData) => ({
+        ...prevTaskData,
+        [name]: selectedDateTime,
+      }));
+    } else {
+      setTaskData((prevTaskData) => ({
+        ...prevTaskData,
+        [name]: value,
+      }));
     }
-    setTaskData((prevTaskData) => ({
-      ...prevTaskData,
-      [name]: value,
-    }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission or save task data
@@ -39,6 +48,7 @@ const AssignTodoToUser = ({ asignModal, setAsignModal, firstname, email }) => {
     setAsignModal(false);
     setTaskData({});
   };
+
   return (
     <Modal open={asignModal} onClose={() => setAsignModal(false)}>
       <Box
@@ -72,8 +82,8 @@ const AssignTodoToUser = ({ asignModal, setAsignModal, firstname, email }) => {
             <FormControl fullWidth margin="normal">
               <TextField
                 id="title"
-                label="title"
-                type="title"
+                label="Title"
+                type="text"
                 name="title"
                 value={taskData.title}
                 onChange={handleChange}
@@ -96,11 +106,34 @@ const AssignTodoToUser = ({ asignModal, setAsignModal, firstname, email }) => {
 
             <FormControl fullWidth margin="normal">
               <TextField
-                id="deadline"
-                label="Deadline"
+                id="date"
+                label="Date"
                 type="date"
-                name="deadline"
-                value={taskData.deadline}
+                name="deadline_time"
+                value={
+                  taskData.deadline_time
+                    ? taskData.deadline_time.split("T")[0]
+                    : ""
+                }
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                required
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <TextField
+                id="time"
+                label="Time"
+                type="time"
+                name="time"
+                value={
+                  taskData.deadline_time
+                    ? taskData.deadline_time.split("T")[1].substring(0, 5)
+                    : ""
+                }
                 onChange={handleChange}
                 InputLabelProps={{
                   shrink: true,
