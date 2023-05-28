@@ -1,44 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import io from "socket.io-client";
+import { fetchTodos } from "../HOF/TodoReducer/todo.action";
+import { Alert, AlertTitle, Box } from "@mui/material";
 
-const TodoComponent = ({ email }) => {
-  const [assignedTodo, setAssignedTodo] = useState([]);
+const SocketComponent = ({ email }) => {
+  const [notifications, setNotifications] = useState("");
+  const [show, setshow] = useState(false);
+  const dispatch = useDispatch();
+  let timeoutId = null; // Variable to store the timeout ID
 
   useEffect(() => {
-    // Connect to the Socket.IO server
-    const socket = io('http://localhost:8090');
+    const socket = io("http://localhost:8090"); // Replace with the actual URL of your backend server
 
-    // Emit the 'subscribe' event with the user's email
-    socket.emit('subscribe', { email });
+    socket.on("todoAssigned", (data) => {
+      // Handle the received data here
+      console.log("Todo assigned:", data);
+      if (data.email === email) {
+        setshow(true);
+        setNotifications(data);
+        dispatch(fetchTodos());
 
-    // Listen for the 'todoAssigned' event
-    socket.on('todoAssigned', (assignedTodo) => {
-      // Handle the received todoAssigned event here    
-      console.log('Todo assigned:', assignedTodo);
+        // Clear previous timeout if exists
+        clearTimeout(timeoutId);
 
-      // Update the state or perform any necessary actions
-      setAssignedTodo(assignedTodo);
-      
+        // Set show to false after 5 seconds
+        timeoutId = setTimeout(() => {
+          setshow(false);
+        }, 5000);
+      }
     });
 
-    // Clean up the Socket.IO connection when the component unmounts
     return () => {
-      // Emit the 'unsubscribe' event with the user's email
-      socket.emit('unsubscribe', { email });
-
+      setshow(false);
       socket.disconnect();
+
+      // Clear the timeout when the component unmounts
+      clearTimeout(timeoutId);
     };
-  }, [email]);
+  }, []);
 
   return (
-    <div>
-      {assignedTodo ? (
-        <p>Task assigned: {assignedTodo.title}</p>
-      ) : (
-        <p>No task assigned</p>
-      )}
-    </div>
+    <>
+    <Box  margin="auto" height="80px" display={show? "flex":"none"} width="400px" marginTop={"30px"}>
+   
+        <Alert severity="info" style={{ width: "400px", backgroundColor: "grey", color: "white",margin:"auto",textAlign:"center" }}>
+          <AlertTitle>Todo assign.</AlertTitle>
+          Task assigned by {notifications.assignee_email}
+        </Alert>
+      {/* )} */}
+    </Box>
+    </>
   );
 };
 
-export default TodoComponent;
+export default SocketComponent;

@@ -38,8 +38,9 @@ import AddTodoModal from "./AddTodoModal";
 import EmailModal from "./AssignUserTodoToAnathorUser.jsx";
 import DataVisualization from "./DataVisualization";
 import Pagination from "./Pagination";
+import SocketComponent from "./Socket.io";
 
-const TodoList = ({loading,page,setpage,totalPages}) => {
+const TodoList = ({ loading, page, setpage, totalPages }) => {
   const todo = useSelector((state) => state.todoReducer.todos);
   const [todos, setTodos] = useState(todo);
   const [view, setView] = useState("list"); // Added todos state
@@ -133,7 +134,7 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
   topics?.forEach((t) => {
     values[t]++;
   });
-
+  const email = localStorage.getItem("user_email");
   return (
     <Box>
       <Typography
@@ -158,6 +159,7 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
           ADD TODO
         </Button>
         {"  "}
+
         <Button
           style={{ marginLeft: "20px" }}
           variant="contained"
@@ -167,6 +169,7 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
           {view === "list" ? "GRID VIEW" : "LIST VIEW"}
         </Button>
       </Box>
+      <SocketComponent email={email} />
       {view === "list" ? (
         <TableContainer
           style={{
@@ -189,6 +192,8 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
                 <TableCell>Title</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>created_at</TableCell>
+                <TableCell>deadline</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -232,6 +237,8 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
                         ? "In-Progress"
                         : "Late"}
                     </TableCell>
+                    <TableCell>{todo.time_at_created}</TableCell>
+                    <TableCell>{todo.deadline_time}</TableCell>
                     <TableCell width="40%" align="center">
                       <Box display="flex" justifyContent="space-between">
                         <IconButton
@@ -374,7 +381,11 @@ const TodoList = ({loading,page,setpage,totalPages}) => {
         </Box>
       )}
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setpage} />  
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setpage}
+      />
       <Dialog open={openEditModal} onClose={handleCloseEditModal}>
         <DialogTitle>Edit Todo</DialogTitle>
         <DialogContent>

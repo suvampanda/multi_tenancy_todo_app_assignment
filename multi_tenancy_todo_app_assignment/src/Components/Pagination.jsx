@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -12,7 +13,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="pagination">
+    <Box className="pagination" style={{padding:"22px"}}>
       {currentPage > 1 && (
         <button
           onClick={() => onPageChange(currentPage - 1)}
@@ -43,7 +44,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           Next
         </button>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -5,11 +5,12 @@ import Navbar from "./Components/Navbar";
 import { useLocation } from "react-router-dom";
 import AsminAssignTodo from "./Components/AdminTodoAssign";
 import { useCallback, useState } from "react";
+import TodoComponent from "./Components/Socket.io";
 
 function App() {
   const location = useLocation();
   
-
+const email=localStorage.getItem("user_email")
 
  
   return (
@@ -19,7 +20,6 @@ function App() {
         <Navbar />
       ) : null}
       <AllRoutes />
-
     </div>
   );
 }
