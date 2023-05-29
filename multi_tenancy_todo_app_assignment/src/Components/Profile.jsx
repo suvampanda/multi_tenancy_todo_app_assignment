@@ -64,26 +64,27 @@ export default function Profile() {
   };
 
   const handelUpdateData = (data) => {
-    console.log(data,"data patch req");
+    console.log(data, "data patch req");
     fetch("http://localhost:8090/user/updateuserinfo", {
       method: "PATCH",
       body: JSON.stringify({
-        firstname:data.firstname,
-        lastname:data.lastname
-        ,password:data.password
+        firstname: data.firstname,
+        lastname: data.lastname,
+        password: data.password,
       }),
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("login_token"),
-        email:localStorage.getItem("user_email"),
-        role:localStorage.getItem("role")
+        email: localStorage.getItem("user_email"),
+        role: localStorage.getItem("role"),
       },
     })
       .then((res) => res.json())
       .then((result) => {
         console.log(result, "rsult");
-      }).catch((error)=>{
-        console.log(error)
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -100,8 +101,13 @@ export default function Profile() {
   };
 
   return (
-    <div>
-      <Button onClick={handleOpen}>Profile</Button>
+    <Box
+      sx={{
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Button onClick={handleOpen}> Profile</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -143,7 +149,7 @@ export default function Profile() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-              name="password"
+                name="password"
                 value={formData?.password}
                 onChange={handleChange}
                 type="password"
@@ -158,6 +164,6 @@ export default function Profile() {
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
