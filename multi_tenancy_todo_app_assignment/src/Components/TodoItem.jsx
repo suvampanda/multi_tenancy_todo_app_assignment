@@ -69,17 +69,6 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
   };
-const datevalid=(deadline)=>{
-  const deadlineFormat = /^date\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\)$/;
-  
-  if (!deadlineFormat.test(deadline)) {
-    // Invalid deadline format
-    return false;
-  }
-  const deadlineDate = new Date(deadline.match(deadlineFormat)[1]);
-  const today = new Date(); 
-  return today > deadlineDate;
-}
 
   const handleOpenEditModal = (todo) => {
     setEditTodo(todo);
@@ -185,13 +174,11 @@ const datevalid=(deadline)=>{
         <TableContainer
           style={{
             height: "400px",
-            maxWidth: 800,
+            maxWidth: 1000,
             margin: "auto",
             marginTop: "40px",
             p: 4,
-            border: "2px solid",
-            borderColor: "#00d5fa",
-            borderRadius: "7px",
+            boxShadow: 3,
             overflowY: "scroll",
           }}
         >
@@ -201,7 +188,7 @@ const datevalid=(deadline)=>{
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Title</TableCell>
-                <TableCell>Description</TableCell>
+                <TableCell colSpan={2}>Description</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>created_at</TableCell>
                 <TableCell>deadline</TableCell>
@@ -211,15 +198,13 @@ const datevalid=(deadline)=>{
             <TableBody>
               {todos.length > 0 &&
                 todos.map((todo) => (
-                <TableRow
-                   
+                  <TableRow
                     key={todo.id}
                     draggable
                     onDragStart={(e) => handleDragStart(e, todo.id)}
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, todo.id)}
                     style={{
-                    
                       backgroundColor:
                         draggedItemId === todo.id ? "white" : "white",
                       fontWeight: "500", // Apply background color when item is being dragged
@@ -227,7 +212,13 @@ const datevalid=(deadline)=>{
                   >
                     <TableCell>{todo.id}</TableCell>
                     <TableCell>{todo.title}</TableCell>
-                    <TableCell>{todo.description}</TableCell>
+                    <TableCell colSpan={2}>
+                      {todo.description
+                        ? todo.description.length > 50
+                          ? `${todo.description.slice(0, 50)}...`
+                          : todo.description
+                        : ""}
+                    </TableCell>
 
                     <TableCell
                       style={{
@@ -257,8 +248,6 @@ const datevalid=(deadline)=>{
                         <IconButton
                           aria-label="edit"
                           onClick={() => handleOpenEditModal(todo)}
-                         disabled={datevalid(todo.deadline_time)}
-                          style={{color:datevalid(todo.deadline_time)?"red":"green"}}
                         >
                           <Edit />
                         </IconButton>
@@ -295,26 +284,25 @@ const datevalid=(deadline)=>{
             margin: "auto",
             marginTop: "40px",
             p: 4,
-            border: "2px solid",
-            borderColor: "#00d5fa",
-            borderRadius: "7px",
+            boxShadow: 3,
             scrollbarWidth: "thin",
             scrollbarColor: "#888 #f1f1f1",
           }}
         >
           <CssBaseline />
           <Box>
-            <Grid container spacing={2}>
+            <Grid container spacing={3} alignItems="left">
               {todos.map((todo) => (
                 <Grid
                   item
-                  xs={4} // Adjust the width to keep a constant block size
+                  width="225px"
                   key={todo.id}
                   sx={{
+                    margin: "auto",
                     fontWeight: "500",
                     display: "flex",
-                    justifyContent: "flex-start", // Align block content to top-left
-                    paddingTop: "8px", // Add top padding for alignment
+                    justifyContent: "flex-start",
+                    paddingTop: "8px",
                   }}
                 >
                   <Paper
@@ -338,7 +326,11 @@ const datevalid=(deadline)=>{
                         overflow: "hidden",
                       }}
                     >
-                      {todo.description}
+                      {todo.description
+                        ? todo.description.length > 50
+                          ? `${todo.description.slice(0, 30)}...`
+                          : todo.description
+                        : ""}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -432,6 +424,7 @@ const datevalid=(deadline)=>{
               <MenuItem value={0}>Pending</MenuItem>
               <MenuItem value={1}>Completed</MenuItem>
               <MenuItem value={2}>In-Progress</MenuItem>
+              <MenuItem value={3}>Late</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
