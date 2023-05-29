@@ -69,6 +69,17 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
   };
+const datevalid=(deadline)=>{
+  const deadlineFormat = /^date\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\)$/;
+  
+  if (!deadlineFormat.test(deadline)) {
+    // Invalid deadline format
+    return false;
+  }
+  const deadlineDate = new Date(deadline.match(deadlineFormat)[1]);
+  const today = new Date(); 
+  return today > deadlineDate;
+}
 
   const handleOpenEditModal = (todo) => {
     setEditTodo(todo);
@@ -200,13 +211,15 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
             <TableBody>
               {todos.length > 0 &&
                 todos.map((todo) => (
-                  <TableRow
+                <TableRow
+                   
                     key={todo.id}
                     draggable
                     onDragStart={(e) => handleDragStart(e, todo.id)}
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, todo.id)}
                     style={{
+                    
                       backgroundColor:
                         draggedItemId === todo.id ? "white" : "white",
                       fontWeight: "500", // Apply background color when item is being dragged
@@ -244,6 +257,8 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                         <IconButton
                           aria-label="edit"
                           onClick={() => handleOpenEditModal(todo)}
+                         disabled={datevalid(todo.deadline_time)}
+                          style={{color:datevalid(todo.deadline_time)?"red":"green"}}
                         >
                           <Edit />
                         </IconButton>
@@ -417,7 +432,6 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
               <MenuItem value={0}>Pending</MenuItem>
               <MenuItem value={1}>Completed</MenuItem>
               <MenuItem value={2}>In-Progress</MenuItem>
-              <MenuItem value={3}>Late</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>

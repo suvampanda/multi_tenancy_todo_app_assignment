@@ -182,7 +182,7 @@ export const assignTodoToUser = (todoId, mail) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
-        `http://localhost:8090/user/assignto/${todoId}`,
+        `http://localhost:8090/users/assignto/${todoId}`,
         {
           method: "PATCH",
           headers: {

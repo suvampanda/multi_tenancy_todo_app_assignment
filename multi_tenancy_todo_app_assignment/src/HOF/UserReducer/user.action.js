@@ -26,7 +26,7 @@ export const fetchUsers = () => {
       let role = localStorage.getItem("role")
 
       // Make API call to fetch users
-      const users = await fetch(`http:localhost:8090/user/alluser`, {
+      const users = await fetch(`http://localhost:8090/user/alluser`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const assignTodoToUser = (mail, todo) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
-        `http:localhost:8090/client/assigntodo`,
+        `http://localhost:8090/clients/assigntodo`,
         {
         method:"POST",
 
@@ -134,7 +134,7 @@ export const updateUser = (userId, updatedUser) => {
     try {
       // Make API call to update user
       const response = await fetch(
-        `http:localhost:8090/user/updateuser/${userId}`,
+        `http://localhost:8090/user/updateuser/${userId}`,
         {
           method: "PATCH",
           headers: {
@@ -171,7 +171,7 @@ export const deleteUser = (userId) => {
       let role = localStorage.getItem("role")
       // Make API call to delete user
       const response = await fetch(
-        `http:localhost:8090/user/deleteuser/${userId}`,
+        `http://localhost:8090/user/deleteuser/${userId}`,
         {
           method: "DELETE",
           headers: {
