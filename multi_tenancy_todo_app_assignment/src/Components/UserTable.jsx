@@ -77,11 +77,13 @@ const UserTable = () => {
   return (
     <Box sx={{ height: "85vh", overflowY: "auto" }}>
       <Typography
-        variant="h4"
-        align="center"
-        sx={{ fontFamily: "inherit", margin: "2vh" }}
+        sx={{
+          fontSize: "30px",
+          margin: "22px",
+          fontFamily: "open sans",
+        }}
       >
-        ALL USER DATA
+        All User Data
       </Typography>
       <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "auto" }}>
         {user.loading && <LinearProgress />}
