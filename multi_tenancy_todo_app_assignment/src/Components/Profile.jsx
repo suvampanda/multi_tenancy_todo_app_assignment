@@ -65,7 +65,7 @@ export default function Profile() {
 
   const handelUpdateData = (data) => {
     console.log(data,"data patch req");
-    fetch("http://localhost:8090/user/updateuserinfo", {
+    fetch("https://multitenancy.onrender.com/user/updateuserinfo", {
       method: "PATCH",
       body: JSON.stringify({
         firstname:data.firstname,

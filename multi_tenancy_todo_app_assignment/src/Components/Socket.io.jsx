@@ -11,7 +11,7 @@ const SocketComponent = ({ email }) => {
   let timeoutId = null; // Variable to store the timeout ID
 
   useEffect(() => {
-    const socket = io("http://localhost:8090"); // Replace with the actual URL of your backend server
+    const socket = io("https://multitenancy.onrender.com"); // Replace with the actual URL of your backend server
 
     socket.on("todoAssigned", (data) => {
       // Handle the received data here
