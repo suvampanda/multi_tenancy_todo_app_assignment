@@ -81,6 +81,7 @@ export default function Profile() {
     })
       .then((res) => res.json())
       .then((result) => {
+        alert("User update succesfully")
         console.log(result, "rsult");
       })
       .catch((error) => {
@@ -88,7 +89,7 @@ export default function Profile() {
       });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     if (
       formData.firstname == "" ||
       formData.lastname == "" ||
@@ -96,7 +97,9 @@ export default function Profile() {
     ) {
       alert("fill all the details");
     } else {
-      handelUpdateData(formData);
+      await handelUpdateData(formData);
+      handleClose()
+      
     }
   };
 
@@ -126,6 +129,7 @@ export default function Profile() {
             <Grid gridTemplateColumns={"repeat(2,1fr)"} item xs={12}>
               <TextField
                 name="firstname"
+                type="text"
                 value={formData?.firstname}
                 onChange={handleChange}
                 fullWidth
@@ -133,6 +137,7 @@ export default function Profile() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                type="text"
                 name="lastname"
                 value={formData?.lastname}
                 onChange={handleChange}
@@ -142,6 +147,7 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="email"
+                type="email"
                 value={profileData?.email}
                 fullWidth
                 InputProps={{ readOnly: true }}
