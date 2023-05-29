@@ -85,7 +85,7 @@ const Navbar = () => {
             <MenuItem value={user_email}>
               <Typography>{user_email}</Typography>
             </MenuItem>
-            <Profile />
+          {role=="user"&&<Profile />}
             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
           </Select>
         </FormControl>
