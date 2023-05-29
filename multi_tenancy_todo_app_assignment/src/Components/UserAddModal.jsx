@@ -17,11 +17,7 @@ const UserAddModal = ({ setstate }) => {
     firstname: "",
     lastname: "",
     email: "",
-    password: "",
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-
   const users = useSelector((store) => store.userReducer);
   const dispatch = useDispatch();
 
@@ -36,13 +32,8 @@ const UserAddModal = ({ setstate }) => {
   };
 
   const validateForm = () => {
-    return user.email.length > 0 && user.password.length > 0;
+    return user.email.length > 0;
   };
-
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   return (
     <Box
       sx={{
@@ -95,31 +86,6 @@ const UserAddModal = ({ setstate }) => {
             required
           />
         </FormControl>
-
-        <FormControl fullWidth margin="normal">
-          <TextField
-            id="password"
-            name="Password"
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            value={user.password}
-            onChange={handleChange}
-            required
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleTogglePasswordVisibility}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </FormControl>
-
         <Button
           type="submit"
           variant="contained"

@@ -46,7 +46,7 @@ const SocketComponent = ({ email }) => {
    
         <Alert severity="info" style={{ width: "400px", backgroundColor: "grey", color: "white",margin:"auto",textAlign:"center" }}>
           <AlertTitle>Todo assign.</AlertTitle>
-          Task assigned by {notifications.assignee_email}
+          Task assigned by {notifications.assignee_email||"client"}
         </Alert>
       {/* )} */}
     </Box>
