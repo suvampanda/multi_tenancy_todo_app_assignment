@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addSubTask } from "../HOF/TodoReducer/todo.action";
+import { createSubtask } from "../HOF/SubTaskReducer/SubTask.action";
 import {
   Dialog,
   DialogTitle,
@@ -86,7 +86,7 @@ const AddSubTaskModal = ({ openAddSubTaskModal, setopenAddSubTaskModal }) => {
       statusName: options[status].value.name,
       statusColor: options[status].value.color,
     };
-    dispatch(addSubTask(newSubTask));
+    dispatch(createSubtask(newSubTask));
     console.log(newSubTask);
     setopenAddSubTaskModal(false);
   };
