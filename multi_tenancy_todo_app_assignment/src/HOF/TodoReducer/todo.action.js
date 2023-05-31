@@ -32,11 +32,7 @@ export const fetchTodos = (page = 1, limit = 5) => {
         url = "todo/alltodo";
       }
       const response = await fetch(
-<<<<<<< HEAD
-        `http://54.252.178.248:8080/${url}?limit=${limit}&page=${page}`,
-=======
         `https://multitenancy.onrender.com/${url}?limit=${limit}&page=${page}`,
->>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           headers: {
             "Content-Type": "application/json",
@@ -77,11 +73,7 @@ export const addTodo = (todo) => {
       } else {
         url = "todo/addtodo";
       }
-<<<<<<< HEAD
-      const response = await fetch(`http://54.252.178.248:8080/${url}`, {
-=======
       const response = await fetch(`https://multitenancy.onrender.com/${url}`, {
->>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,11 +110,7 @@ export const deleteTodo = (id) => {
         url = "todo/delete";
       }
       const response = await fetch(
-<<<<<<< HEAD
-        `http://54.252.178.248:8080/${url}/${id}`,
-=======
         `https://multitenancy.onrender.com/${url}/${id}`,
->>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           method: "DELETE",
           headers: {
@@ -157,11 +145,7 @@ export const updateTodo = (id, updatedTodo) => {
         url = "todo/update";
       }
       const response = await fetch(
-<<<<<<< HEAD
-        `http://54.252.178.248:8080/${url}/${id}`,
-=======
         `https://multitenancy.onrender.com/${url}/${id}`,
->>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           method: "PATCH",
           headers: {
@@ -199,11 +183,7 @@ export const assignTodoToUser = (todoId, mail) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
-<<<<<<< HEAD
-        `http://54.252.178.248:8080/users/assignto/${todoId}`,
-=======
         `https://multitenancy.onrender.com/users/assignto/${todoId}`,
->>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           method: "PATCH",
           headers: {

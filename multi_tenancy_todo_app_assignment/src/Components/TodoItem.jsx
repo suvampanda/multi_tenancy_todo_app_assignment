@@ -40,6 +40,7 @@ import DataVisualization from "./DataVisualization";
 import Pagination from "./Pagination";
 import SocketComponent from "./Socket.io";
 import { Link } from "react-router-dom";
+import { decryptFn, encryptFn } from "../utils/encrypt";
 
 const TodoList = ({ loading, page, setpage, totalPages }) => {
   const todo = useSelector((state) => state.todoReducer.todos);
@@ -70,7 +71,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
   };
-
+ 
   const handleOpenEditModal = (todo) => {
     setEditTodo(todo);
     setTitle(todo.title);
@@ -212,7 +213,10 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                     }}
                   >
                     <TableCell>{todo.id}</TableCell>
-                    <Link to={`/${todo.id}`}> <TableCell>{todo.title}</TableCell></Link>
+                    <Link to={`/${encryptFn(todo?.id.toString())}`}>
+                      {" "}
+                      <TableCell>{todo.title}</TableCell>
+                    </Link>
                     <TableCell colSpan={2}>
                       {todo.description
                         ? todo.description.length > 50
