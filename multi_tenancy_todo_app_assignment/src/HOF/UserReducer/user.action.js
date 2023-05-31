@@ -26,7 +26,11 @@ export const fetchUsers = () => {
       let role = localStorage.getItem("role")
 
       // Make API call to fetch users
+<<<<<<< HEAD
       const users = await fetch(`http://54.252.178.248:8080/user/alluser`, {
+=======
+      const users = await fetch(`https://multitenancy.onrender.com/user/alluser`, {
+>>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +59,11 @@ export const assignTodoToUser = (mail, todo) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
+<<<<<<< HEAD
         `http://54.252.178.248:8080/clients/assigntodo`,
+=======
+        `https://multitenancy.onrender.com/clients/assigntodo`,
+>>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
         method:"POST",
 
@@ -95,7 +103,11 @@ export const addUser = (user) => {
       let role = localStorage.getItem("role")
     try {
       // Make API call to add user
+<<<<<<< HEAD
       const response = await fetch(`http://54.252.178.248:8080/user/adduser`, {
+=======
+      const response = await fetch(`https://multitenancy.onrender.com/user/adduser`, {
+>>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         method: "POST",
         body: JSON.stringify(user),
         headers: {
@@ -134,7 +146,11 @@ export const updateUser = (userId, updatedUser) => {
     try {
       // Make API call to update user
       const response = await fetch(
+<<<<<<< HEAD
         `http://54.252.178.248:8080/user/updateuser/${userId}`,
+=======
+        `https://multitenancy.onrender.com/user/updateuser/${userId}`,
+>>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           method: "PATCH",
           headers: {
@@ -171,7 +187,11 @@ export const deleteUser = (userId) => {
       let role = localStorage.getItem("role")
       // Make API call to delete user
       const response = await fetch(
+<<<<<<< HEAD
         `http://54.252.178.248:8080/user/deleteuser/${userId}`,
+=======
+        `https://multitenancy.onrender.com/user/deleteuser/${userId}`,
+>>>>>>> be2051b0b9c3a5ce24c9cee665399fb901b443f4
         {
           method: "DELETE",
           headers: {

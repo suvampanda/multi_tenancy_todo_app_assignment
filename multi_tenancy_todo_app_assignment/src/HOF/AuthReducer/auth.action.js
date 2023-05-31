@@ -24,7 +24,8 @@ const Register_FN = ({ firstname, lastname, email, password }) => {
 
     try {
       let data = await axios.post(
-        `http://54.252.178.248:8080/client/register?`,
+        `https://multitenancy.onrender.com/client/register`,
+        
         {
           firstname,
           lastname,
@@ -76,7 +77,7 @@ const Login_FN = ({ email, password }) => {
       dispatch(login_req());
 
       let data = await axios.post(
-        `http://54.252.178.248:8080/bothlogin/login?`,
+        `https://multitenancy.onrender.com/bothlogin/login`,
         {
           email,
           password,
@@ -116,7 +117,7 @@ export const fetchProfileFailure = (error) => {
 export const fetchProfile = () => {
   return (dispatch) => {
     // Make API call to fetch profile data
-    return fetch("http://54.252.178.248:8080/user/getuserdetail", {
+    return fetch("https://multitenancy.onrender.com/user/getuserdetail", {
       method: "GET",
       headers: {
         "content-type": "application/json",

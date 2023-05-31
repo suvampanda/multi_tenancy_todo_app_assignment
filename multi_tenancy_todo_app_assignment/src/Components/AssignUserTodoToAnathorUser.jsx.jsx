@@ -22,14 +22,16 @@ const dispatch=useDispatch()
     setUserEmail(e.target.value);
   };
 
-  const handleAssignTodoClick = () => {
+  const handleAssignTodoClick = async() => {
     //dispatching the patch function ;
-    dispatch( assignTodoToUser(assigneTodoId,assigne_email))
+    await dispatch( assignTodoToUser(assigneTodoId,assigne_email))
+    setOpen(false)
     console.log(text);
   };
 
   const handleClose = () => {
     setOpen(false);
+  
   };
  
 
@@ -52,9 +54,10 @@ const dispatch=useDispatch()
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button
-          onClick={handleAssignTodoClick}
+          onClick={()=>{handleAssignTodoClick();handleClose()}}
           color="primary"
           variant="contained"
+    
         >
           Assign
         </Button>

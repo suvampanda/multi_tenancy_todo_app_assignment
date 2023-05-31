@@ -65,29 +65,31 @@ export default function Profile() {
 
   const handelUpdateData = (data) => {
     console.log(data,"data patch req");
-    fetch("http://54.252.178.248:8080/user/updateuserinfo", {
+    fetch("https://multitenancy.onrender.com/user/updateuserinfo", {
       method: "PATCH",
       body: JSON.stringify({
-        firstname:data.firstname,
-        lastname:data.lastname
-        ,password:data.password
+        firstname: data.firstname,
+        lastname: data.lastname,
+        password: data.password,
       }),
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("login_token"),
-        email:localStorage.getItem("user_email"),
-        role:localStorage.getItem("role")
+        email: localStorage.getItem("user_email"),
+        role: localStorage.getItem("role"),
       },
     })
       .then((res) => res.json())
       .then((result) => {
+        alert("User update succesfully")
         console.log(result, "rsult");
-      }).catch((error)=>{
-        console.log(error)
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     if (
       formData.firstname == "" ||
       formData.lastname == "" ||
@@ -95,13 +97,20 @@ export default function Profile() {
     ) {
       alert("fill all the details");
     } else {
-      handelUpdateData(formData);
+      await handelUpdateData(formData);
+      handleClose()
+      
     }
   };
 
   return (
-    <div>
-      <Button onClick={handleOpen}>Profile</Button>
+    <Box
+      sx={{
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Button onClick={handleOpen}> Profile</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -120,6 +129,7 @@ export default function Profile() {
             <Grid gridTemplateColumns={"repeat(2,1fr)"} item xs={12}>
               <TextField
                 name="firstname"
+                type="text"
                 value={formData?.firstname}
                 onChange={handleChange}
                 fullWidth
@@ -127,6 +137,7 @@ export default function Profile() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                type="text"
                 name="lastname"
                 value={formData?.lastname}
                 onChange={handleChange}
@@ -136,6 +147,7 @@ export default function Profile() {
             <Grid item xs={12}>
               <TextField
                 name="email"
+                type="email"
                 value={profileData?.email}
                 fullWidth
                 InputProps={{ readOnly: true }}
@@ -143,7 +155,7 @@ export default function Profile() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-              name="password"
+                name="password"
                 value={formData?.password}
                 onChange={handleChange}
                 type="password"
@@ -158,6 +170,6 @@ export default function Profile() {
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }

@@ -17,7 +17,7 @@ export default function AsminAssignTodo({ queryHandeler }) {
     const token = localStorage.getItem("login_token");
 
 
-     return fetch("http://54.252.178.248:8080/user/info", {
+     return fetch("https://multitenancy.onrender.com/user/info", {
       method: "GET",
       headers: {
         "content-type": "application/json",
