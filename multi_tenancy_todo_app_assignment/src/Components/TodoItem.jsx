@@ -39,6 +39,7 @@ import EmailModal from "./AssignUserTodoToAnathorUser.jsx";
 import DataVisualization from "./DataVisualization";
 import Pagination from "./Pagination";
 import SocketComponent from "./Socket.io";
+import { Link } from "react-router-dom";
 
 const TodoList = ({ loading, page, setpage, totalPages }) => {
   const todo = useSelector((state) => state.todoReducer.todos);
@@ -211,7 +212,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                     }}
                   >
                     <TableCell>{todo.id}</TableCell>
-                    <TableCell>{todo.title}</TableCell>
+                    <Link to={`/${todo.id}`}> <TableCell>{todo.title}</TableCell></Link>
                     <TableCell colSpan={2}>
                       {todo.description
                         ? todo.description.length > 50
