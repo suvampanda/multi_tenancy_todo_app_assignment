@@ -7,9 +7,11 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   IconButton,
+  Box,
 } from "@mui/material";
 import {
   Assignment,
@@ -80,90 +82,114 @@ const SubTask = () => {
   return (
     <Card style={{ width: "70%", margin: "auto" }}>
       <CardContent>
-        <Typography variant="h6">Subtask</Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tasks.map((task, index) => (
-              <TableRow key={task.id}>
-                <TableCell>{task.id}</TableCell>
-                <TableCell>
-                  {editIndex === index ? (
-                    <TextField
-                      value={editTask.title}
-                      onChange={(e) =>
-                        handleTaskChange("title", e.target.value)
-                      }
-                    />
-                  ) : (
-                    task.title
-                  )}
-                </TableCell>
-                <TableCell>
-                  {editIndex === index ? (
-                    <TextField
-                      value={editTask.description}
-                      onChange={(e) =>
-                        handleTaskChange("description", e.target.value)
-                      }
-                    />
-                  ) : (
-                    task.description
-                  )}
-                </TableCell>
-                <TableCell>
-                  {editIndex === index ? (
-                    <TextField
-                      value={editTask.status}
-                      onChange={(e) =>
-                        handleTaskChange("status", e.target.value)
-                      }
-                    />
-                  ) : (
-                    task.status
-                  )}
-                </TableCell>
-                <TableCell>
-                  {editIndex === index ? (
-                    <>
-                      <IconButton onClick={() => handleUpdateTask(index)}>
-                        <FormatListBulleted />
-                      </IconButton>
-                      <IconButton onClick={handleCancelEdit}>
-                        <Delete />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <>
-                      <IconButton onClick={() => handleEditTask(index, task)}>
-                        <Edit />
-                      </IconButton>
-                      <IconButton onClick={() => handleRemoveTask(index)}>
-                        <Delete />
-                      </IconButton>
-                    </>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Assignment />}
-          onClick={handleAddTask}
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: "30px",
+            margin: "22px",
+            fontFamily: "open sans",
+            textTransform: "uppercase",
+          }}
         >
-          Add Sub Task
-        </Button>
+          SUBTASK
+        </Typography>
+        <Box>
+          <Button
+            style={{ marginRight: "20px" }}
+            variant="contained"
+            startIcon={<Assignment />}
+            onClick={handleAddTask}
+          >
+            ADD SUBTASK
+          </Button>
+        </Box>
+        {/* <TableContainer
+          style={{
+            height: "400px",
+            maxWidth: 1000,
+            margin: "auto",
+            marginTop: "40px",
+            p: 4,
+            boxShadow: 3,
+            overflowY: "scroll",
+          }}
+        > */}
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tasks.map((task, index) => (
+                <TableRow key={task.id}>
+                  <TableCell>{task.id}</TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <TextField
+                        value={editTask.title}
+                        onChange={(e) =>
+                          handleTaskChange("title", e.target.value)
+                        }
+                      />
+                    ) : (
+                      task.title
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <TextField
+                        value={editTask.description}
+                        onChange={(e) =>
+                          handleTaskChange("description", e.target.value)
+                        }
+                      />
+                    ) : (
+                      task.description
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <TextField
+                        value={editTask.status}
+                        onChange={(e) =>
+                          handleTaskChange("status", e.target.value)
+                        }
+                      />
+                    ) : (
+                      task.status
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <>
+                        <IconButton onClick={() => handleUpdateTask(index)}>
+                          <FormatListBulleted />
+                        </IconButton>
+                        <IconButton onClick={handleCancelEdit}>
+                          <Delete />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton onClick={() => handleEditTask(index, task)}>
+                          <Edit />
+                        </IconButton>
+                        <IconButton onClick={() => handleRemoveTask(index)}>
+                          <Delete />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        {/* </TableContainer> */}
       </CardContent>
     </Card>
   );
