@@ -65,7 +65,7 @@ export default function Profile() {
 
   const handelUpdateData = (data) => {
     console.log(data,"data patch req");
-    fetch("http://localhost:8090/user/updateuserinfo", {
+    fetch("http://54.252.178.248:8080/user/updateuserinfo", {
       method: "PATCH",
       body: JSON.stringify({
         firstname:data.firstname,
