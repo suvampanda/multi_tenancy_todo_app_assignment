@@ -25,6 +25,11 @@ const WaffleChart = ({values}) => {
       label: "Late",
       value: values[3],
     },
+    {
+      id: "Custom",
+      label: "Custom",
+      value: values[4],
+    },
   ];
   let total = 0;
   for (let i = 0; i < values.length; i++) {
