@@ -24,11 +24,14 @@ import {
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { decryptFn } from "../utils/encrypt";
 
 const SubTask = () => {
   const { todoId } = useParams();
+  const decryptId = decryptFn(todoId);
 
-  console.log(todoId);
+  console.log(decryptId, "decryptId");
+
   const [tasks, setTasks] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editTask, setEditTask] = useState({

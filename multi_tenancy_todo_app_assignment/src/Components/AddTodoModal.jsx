@@ -24,7 +24,7 @@ const AddTodoModal = ({ openAddTodoModal, setOpenAddTodoModal }) => {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(0);
   const [statusColor, setStatusColor] = useState("orange");
-  const [statusName, setStatusName] = useState("Pending")
+  const [statusName, setStatusName] = useState("Pending");
   const [customColor, setCustomColor] = useState("#000000");
   const [customText, setCustomText] = useState("");
   const [isCustomSelected, setIsCustomSelected] = useState(false);
@@ -38,8 +38,8 @@ const AddTodoModal = ({ openAddTodoModal, setOpenAddTodoModal }) => {
     },
     {
       id: 1,
-      label: "Pending",
-      value: { name: "Pending", color: "green" },
+      label: "Completed",
+      value: { name: "Completed", color: "green" },
     },
     {
       id: 2,
@@ -87,13 +87,25 @@ const AddTodoModal = ({ openAddTodoModal, setOpenAddTodoModal }) => {
   };
 
   const handleAddTodo = () => {
-    const newTodo = {
-      title,
-      description,
-      status,
-      statusName: options[status].value.name,
-      statusColor: options[status].value.color,
-    };
+   let newTodo;
+    if(options[status].label==="Custom"){
+    newTodo = {
+        title,
+        description,
+        status,
+        custom_status: options[status].value.name ,
+        color_code: options[status].value.color,
+      };
+    }
+    else{
+        newTodo={
+        title,
+        description,
+        status
+      }
+    }
+    
+
     dispatch(addTodo(newTodo));
     console.log(newTodo);
     setOpenAddTodoModal(false);
