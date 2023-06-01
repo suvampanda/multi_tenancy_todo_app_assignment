@@ -40,6 +40,7 @@ import DataVisualization from "./DataVisualization";
 import Pagination from "./Pagination";
 import SocketComponent from "./Socket.io";
 import { Link } from "react-router-dom";
+import { decryptFn, encryptFn } from "../utils/encrypt";
 
 const TodoList = ({ loading, page, setpage, totalPages }) => {
   const todo = useSelector((state) => state.todoReducer.todos);
@@ -70,7 +71,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
   };
-
+ 
   const handleOpenEditModal = (todo) => {
     setEditTodo(todo);
     setTitle(todo.title);
@@ -130,7 +131,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   };
   const topics = todos.map((x) => x.status);
   // console.log(topics);
-  const arraySize = 4;
+  const arraySize = 5;
   let values = Array.from({ length: arraySize }, () => 0);
   topics?.forEach((t) => {
     values[t]++;
@@ -212,7 +213,10 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                     }}
                   >
                     <TableCell>{todo.id}</TableCell>
-                    <Link to={`/${todo.id}`}> <TableCell>{todo.title}</TableCell></Link>
+                    <Link to={`/${encryptFn(todo?.id.toString())}`}>
+                      {" "}
+                      <TableCell>{todo.title}</TableCell>
+                    </Link>
                     <TableCell colSpan={2}>
                       {todo.description
                         ? todo.description.length > 50
@@ -230,7 +234,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                             ? "green"
                             : todo.status === 2
                             ? "blue"
-                            : "red",
+                          : todo.status===3? "red":`${todo.color_code}`,
                         fontWeight: 600,
                       }}
                     >
@@ -240,7 +244,8 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                         ? "Completed"
                         : todo.status === 2
                         ? "In-Progress"
-                        : "Late"}
+                        
+                        :todo.status===3? "Late":todo.custom_status}
                     </TableCell>
                     <TableCell>{todo.time_at_created}</TableCell>
                     <TableCell>{todo.deadline_time}</TableCell>

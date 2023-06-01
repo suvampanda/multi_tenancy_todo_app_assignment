@@ -25,7 +25,7 @@ const Register_FN = ({ firstname, lastname, email, password }) => {
     try {
       let data = await axios.post(
         `https://multitenancy.onrender.com/client/register`,
-        
+
         {
           firstname,
           lastname,
@@ -75,14 +75,11 @@ const Login_FN = ({ email, password }) => {
   return async (dispatch) => {
     try {
       dispatch(login_req());
-
-      let data = await axios.post(
-        `https://multitenancy.onrender.com/bothlogin/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const url = `http://localhost:8090/bothlogin/login`;
+      let data = await axios.post(url, {
+        email,
+        password,
+      });
       data = await data.data;
 
       console.log(data, "login data");

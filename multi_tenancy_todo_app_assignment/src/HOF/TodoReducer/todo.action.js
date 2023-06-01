@@ -15,7 +15,6 @@ import {
   UPDATE_TODO_FAILURE,
   UPDATE_TODO_REQUEST,
   UPDATE_TODO_SUCCESS,
-  
 } from "./todo.actionTypes";
 // Fetch all todos action
 export const fetchTodos = (page = 1, limit = 5) => {
@@ -25,14 +24,14 @@ export const fetchTodos = (page = 1, limit = 5) => {
     try {
       const email = localStorage.getItem("user_email");
       const token = localStorage.getItem("login_token");
-      const role = localStorage.getItem("role")
+      const role = localStorage.getItem("role");
       if (role == "user") {
         url = "todo/useralltodo";
       } else {
         url = "todo/alltodo";
       }
       const response = await fetch(
-        `https://multitenancy.onrender.com/${url}?limit=${limit}&page=${page}`,
+        `http://localhost:8090/${url}?limit=${limit}&page=${page}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -42,11 +41,11 @@ export const fetchTodos = (page = 1, limit = 5) => {
         }
       );
       const data = await response.json();
-      console.log(data);
+      console.log(data,"todo we are fetching");
 
-      const alldetails={...data,currentPage:page,itemsPerPage:limit}
+      const alldetails = { ...data, currentPage: page, itemsPerPage: limit };
 
-      if (!data.error&&!data.message) {
+      if (!data.error && !data.message) {
         dispatch({ type: FETCH_TODOS_SUCCESS, payload: alldetails });
       } else {
         dispatch({ type: FETCH_TODOS_FAILURE, error: "Failed to fetch todos" });
@@ -66,14 +65,15 @@ export const addTodo = (todo) => {
     try {
       const email = localStorage.getItem("user_email");
       const token = localStorage.getItem("login_token");
-      const role = localStorage.getItem("role")
+      const role = localStorage.getItem("role");
       let url;
       if (role == "user") {
         url = "todo/useraddtodo";
       } else {
         url = "todo/addtodo";
       }
-      const response = await fetch(`https://multitenancy.onrender.com/${url}`, {
+      console.log(todo, "todo before");
+      const response = await fetch(`http://localhost:8090/${url}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,6 +83,7 @@ export const addTodo = (todo) => {
         body: JSON.stringify(todo),
       });
       const data = await response.json();
+      console.log(data, "data in todoaction");
       if (data.message) {
         dispatch({ type: ADD_TODO_SUCCESS, payload: data.todo });
       } else {
@@ -102,7 +103,7 @@ export const deleteTodo = (id) => {
     try {
       const email = localStorage.getItem("user_email");
       const token = localStorage.getItem("login_token");
-      const role = localStorage.getItem("role")
+      const role = localStorage.getItem("role");
       let url;
       if (role == "user") {
         url = "todo/userdeletetodo";
@@ -138,7 +139,7 @@ export const updateTodo = (id, updatedTodo) => {
     try {
       const email = localStorage.getItem("user_email");
       const token = localStorage.getItem("login_token");
-      const role = localStorage.getItem("role")
+      const role = localStorage.getItem("role");
       if (role == "user") {
         url = "todo/userupdatetodo";
       } else {
@@ -172,13 +173,12 @@ export const updateTodo = (id, updatedTodo) => {
 };
 
 export const assignTodoToUser = (todoId, mail) => {
-
-  console.log(todoId,mail)
+  console.log(todoId, mail);
   return async (dispatch) => {
     dispatch({ type: ASSIGN_TODO_TO_USER_REQUEST });
     const email = localStorage.getItem("user_email");
     const token = localStorage.getItem("login_token");
-    const role = localStorage.getItem("role")
+    const role = localStorage.getItem("role");
 
     try {
       // Make API call to assign todo to user
@@ -187,12 +187,12 @@ export const assignTodoToUser = (todoId, mail) => {
         {
           method: "PATCH",
           headers: {
-            "Content-Type":"application/json",
+            "Content-Type": "application/json",
             Authorization: token,
-            Email: email
+            Email: email,
           },
-        
-          body:JSON.stringify({email:mail})
+
+          body: JSON.stringify({ email: mail }),
         }
       );
 
@@ -205,7 +205,7 @@ export const assignTodoToUser = (todoId, mail) => {
         alert(data.error);
         dispatch({ type: ASSIGN_TODO_TO_USER_FAILURE, payload: data.error });
       }
-    } catch (error) { 
+    } catch (error) {
       dispatch({ type: ASSIGN_TODO_TO_USER_FAILURE, payload: error.message });
     }
   };
