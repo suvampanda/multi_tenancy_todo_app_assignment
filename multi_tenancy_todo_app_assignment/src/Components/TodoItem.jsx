@@ -131,7 +131,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
   };
   const topics = todos.map((x) => x.status);
   // console.log(topics);
-  const arraySize = 4;
+  const arraySize = 5;
   let values = Array.from({ length: arraySize }, () => 0);
   topics?.forEach((t) => {
     values[t]++;
