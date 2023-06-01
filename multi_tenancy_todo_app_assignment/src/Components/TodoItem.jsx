@@ -234,7 +234,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                             ? "green"
                             : todo.status === 2
                             ? "blue"
-                            : "red",
+                          : todo.status===3? "red":`${todo.color_code}`,
                         fontWeight: 600,
                       }}
                     >
@@ -244,7 +244,8 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                         ? "Completed"
                         : todo.status === 2
                         ? "In-Progress"
-                        : "Late"}
+                        
+                        :todo.status===3? "Late":todo.custom_status}
                     </TableCell>
                     <TableCell>{todo.time_at_created}</TableCell>
                     <TableCell>{todo.deadline_time}</TableCell>

@@ -28,6 +28,12 @@ const PieChart = ({ values }) => {
       value: values[3],
       color: "hsl(162, 70%, 50%)",
     },
+    {
+      id: "Custom",
+      label: "Custom",
+      value: values[4],
+      color: "hsl(168, 60%, 60%)",
+    },
   ];
   return (
     <Box sx={{ height: "400px", fontSize: "16px" }}>
