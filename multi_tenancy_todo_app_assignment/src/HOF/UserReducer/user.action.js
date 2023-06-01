@@ -26,7 +26,7 @@ export const fetchUsers = () => {
       let role = localStorage.getItem("role")
 
       // Make API call to fetch users
-      const users = await fetch(`https://multitenancy.onrender.com/user/alluser`, {
+      const users = await fetch(`http://localhost:8000/user/alluser`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const assignTodoToUser = (mail, todo) => {
     try {
       // Make API call to assign todo to user
       let response = await fetch(
-        `https://multitenancy.onrender.com/clients/assigntodo`,
+        `http://localhost:8000/clients/assigntodo`,
         {
         method:"POST",
 
@@ -95,7 +95,7 @@ export const addUser = (user) => {
       let role = localStorage.getItem("role")
     try {
       // Make API call to add user
-      const response = await fetch(`https://multitenancy.onrender.com/user/adduser`, {
+      const response = await fetch(`http://localhost:8000/user/adduser`, {
         method: "POST",
         body: JSON.stringify(user),
         headers: {
@@ -134,7 +134,7 @@ export const updateUser = (userId, updatedUser) => {
     try {
       // Make API call to update user
       const response = await fetch(
-        `https://multitenancy.onrender.com/user/updateuser/${userId}`,
+        `http://localhost:8000/user/updateuser/${userId}`,
         {
           method: "PATCH",
           headers: {
@@ -171,7 +171,7 @@ export const deleteUser = (userId) => {
       let role = localStorage.getItem("role")
       // Make API call to delete user
       const response = await fetch(
-        `https://multitenancy.onrender.com/user/deleteuser/${userId}`,
+        `http://localhost:8000/user/deleteuser/${userId}`,
         {
           method: "DELETE",
           headers: {

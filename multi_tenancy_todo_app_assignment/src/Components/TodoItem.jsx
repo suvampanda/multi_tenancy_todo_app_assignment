@@ -213,7 +213,7 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                     }}
                   >
                     <TableCell>{todo.id}</TableCell>
-                    <Link to={`/${encryptFn(todo?.id.toString())}`}>
+                    <Link to={`/single/${encryptFn(todo?.id.toString())}`}>
                       {" "}
                       <TableCell>{todo.title}</TableCell>
                     </Link>

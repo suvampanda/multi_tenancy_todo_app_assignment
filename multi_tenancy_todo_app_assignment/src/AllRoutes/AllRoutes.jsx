@@ -15,7 +15,7 @@ const AllRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
-        <Route path="/:todoId" element={<SubTask />} />
+        <Route path="/single/:todoId" element={<SubTask />} />
       </Routes>
     </>
   );
