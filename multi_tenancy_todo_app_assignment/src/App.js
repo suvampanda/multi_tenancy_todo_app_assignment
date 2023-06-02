@@ -16,7 +16,7 @@ const email=localStorage.getItem("user_email")
   return (
     <div className="App">
 
-      {location.pathname === '/' || location.pathname === '/dashboard' ? (
+      {location.pathname === '/' || location.pathname === '/dashboard'|| location.pathname === '/alltask'  ? (
         <Navbar />
       ) : null}
       <AllRoutes />

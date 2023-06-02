@@ -10,16 +10,19 @@ import {
   Menu,
 } from "@mui/material";
 
-import { Notifications } from "@mui/icons-material";
+import { Notifications, TextDecreaseOutlined } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { logout_FN } from "../HOF/AuthReducer/auth.action";
 import Profile from "./Profile";
+import { fetchNotifications } from "../HOF/NotificationReducer/action";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const auth = useSelector((store) => store.authReducer);
+  const auth = useSelector((store) => store.authReducer)
+  const notification = useSelector((store) => store.notificationReducer.notifications);
+
   let role = localStorage.getItem("role");
   let user_email = localStorage.getItem("user_email");
   const dispatch = useDispatch();
@@ -30,20 +33,16 @@ const Navbar = () => {
     navigate("/login");
   };
 
+useEffect(()=>{
+  dispatch(fetchNotifications())
+},[])
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+console.log(notification,"notification")
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const notificationData = [
-    { id: 1, text: "Notification 1" },
-    { id: 2, text: "Notification 2" },
-    { id: 3, text: "Notification 3" },
-  ];
-
   return (
     <Box
       display={"flex"}
@@ -72,7 +71,8 @@ const Navbar = () => {
       <Box gap="2rem" sx={{ display: "flex", flexDirection: "row" }}>
         <Box>
           <IconButton onClick={handleClick}>
-            <Notifications badgeContent={notificationData.length} />
+            <Notifications badgeContent={notification.length} />
+           <Box >{notification.length}</Box>
           </IconButton>
           <Menu
             anchorEl={anchorEl}
@@ -87,13 +87,27 @@ const Navbar = () => {
               horizontal: "right",
             }}
           >
-            {notificationData.map((notification) => (
+            {notification.map((notification) => (
               <MenuItem key={notification.id}>
-                <Typography>{notification.text}</Typography>
+                
+                <Typography border={"1px solid grey"} width={"100%"} fontSize={"10px"} padding={"5px"}>{notification.message} </Typography>
               </MenuItem>
             ))}
           </Menu>
         </Box>
+        <Button
+          fontWeight="bold"
+          fontSize="20px"
+          color="primary"
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
+          onClick={() => navigate("/alltask")}
+        >
+          alltask
+        </Button>
         <Button
           fontWeight="bold"
           fontSize="20px"

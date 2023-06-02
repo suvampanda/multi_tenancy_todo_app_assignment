@@ -20,6 +20,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  LinearProgress,
 } from "@mui/material";
 import {
   AddCircleOutline,
@@ -74,15 +75,15 @@ const Subtask = ({
   };
 
   const handleAddSubtaskClick = () => {
-      handleAddSubtask(mainTask.id, {...newSubtask,status:status});
-      setNewSubtask({
-        sub_task: "",
-        status:0,
-        color_code: "",
-        custom_status: "",
-      });
-      setStatus(0)
-      setIsAddDialogOpen(false);
+    handleAddSubtask(mainTask.id, { ...newSubtask, status: status });
+    setNewSubtask({
+      sub_task: "",
+      status: 0,
+      color_code: "",
+      custom_status: "",
+    });
+    setStatus(0);
+    setIsAddDialogOpen(false);
   };
 
   const handleDeleteSubtaskClick = (subtaskId) => {
@@ -115,7 +116,7 @@ const Subtask = ({
     setIsEditDialogOpen(false);
   };
 
-  const getStatusText = (status,Custom) => {
+  const getStatusText = (status, Custom) => {
     switch (status) {
       case 0:
         return "Pending";
@@ -130,8 +131,7 @@ const Subtask = ({
     }
   };
 
-
-  const getStatusColor = (status,Custom,color_code) => {
+  const getStatusColor = (status, Custom, color_code) => {
     switch (status) {
       case 0:
         return "#FFF9C4";
@@ -140,21 +140,36 @@ const Subtask = ({
       case 2:
         return "#61c99c";
       case 3:
-        return "#C8E6C9";
+        return "#FF4500";
       default:
         return color_code;
     }
   };
   return (
     <React.Fragment>
-      <TableRow>
-        <TableCell style={{ fontWeight: "bold", borderBottom: "none" }}>
+      <TableRow
+        style={{
+          fontWeight: "bold",
+          borderBottom: "none",
+          backgroundColor: "grey",
+          color: "white",
+        }}
+      >
+        <TableCell
+          style={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            borderBottom: "none",
+            backgroundColor: "grey",
+            color: "white",
+          }}
+        >
           {mainTask.title}
         </TableCell>
         <TableCell style={{ borderBottom: "none" }}>
           <IconButton
             aria-label="expand"
-            size="small"
+            size="large"
             onClick={handleCollapseToggle}
           >
             {collapseOpen ? <ExpandLess /> : <ExpandMore />}
@@ -172,11 +187,37 @@ const Subtask = ({
                   <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody style={{color:"white",fontSize:"20px"}}>
+              <TableBody style={{ color: "white", fontSize: "20px" }}>
                 {mainTask.subtasks.map((subtask) => (
-                  <TableRow  style={{border:"1px solid blue", backgroundColor: getStatusColor(subtask.status,subtask.custom_status,subtask.color_code)}} key={subtask.subtask_id}>
-                    <TableCell style={{color:"grey",fontSize:"20px",fontWeight:"600"}}>{subtask.sub_task}</TableCell>
-                    <TableCell style={{color:"grey",fontSize:"20px", fontWeight:"600"}}>{getStatusText(subtask.status,subtask.custom_status)}</TableCell>
+                  <TableRow
+                    style={{
+                      border: "1px solid blue",
+                      backgroundColor: getStatusColor(
+                        subtask.status,
+                        subtask.custom_status,
+                        subtask.color_code
+                      ),
+                    }}
+                    key={subtask.subtask_id}
+                  >
+                    <TableCell
+                      style={{
+                        color: "grey",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {subtask.sub_task}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        color: "grey",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {getStatusText(subtask.status, subtask.custom_status)}
+                    </TableCell>
                     <TableCell>
                       <IconButton
                         aria-label="edit"
@@ -296,23 +337,21 @@ const Subtask = ({
           />
           {/* Add more fields as needed */}
           <FormControl fullWidth>
-  <InputLabel>Status</InputLabel>
-  <Select
-    value={editSubtask.status}
-    onChange={(e) =>
-      setEditSubtask({ ...editSubtask, status: e.target.value })
-    }
-    label="Status"
-  >
-    <MenuItem value={0}>Pending</MenuItem>
-    <MenuItem value={1}>In Progress</MenuItem>
-    <MenuItem value={2}>Completed</MenuItem>
-    <MenuItem value={3}>Late</MenuItem>
-    {/* Add custom status options if needed */}
-  </Select>
-</FormControl>
-
-
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={editSubtask.status}
+              onChange={(e) =>
+                setEditSubtask({ ...editSubtask, status: e.target.value })
+              }
+              label="Status"
+            >
+              <MenuItem value={0}>Pending</MenuItem>
+              <MenuItem value={1}>In Progress</MenuItem>
+              <MenuItem value={2}>Completed</MenuItem>
+              <MenuItem value={3}>Late</MenuItem>
+              {/* Add custom status options if needed */}
+            </Select>
+          </FormControl>
 
           {/* Add more fields as needed */}
         </DialogContent>
@@ -329,6 +368,7 @@ export default Subtask;
 
 const MainTaskList = () => {
   const allTask = useSelector((state) => state.subtaskReducer.allData);
+  const loading = useSelector((state) => state.subtaskReducer.loading);
   console.log(allTask);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -338,7 +378,7 @@ const MainTaskList = () => {
   const handleAddSubtask = (mainTaskId, subtask) => {
     // Implement the add subtask functionality
     dispatch(createSubtask(mainTaskId, subtask));
-    console.log(subtask)
+    console.log(subtask);
   };
 
   const handleDeleteSubtask = (mainTaskId, subtaskId) => {
@@ -356,12 +396,25 @@ const MainTaskList = () => {
   };
 
   return (
-    <Table style={{ margin: "auto", width: "80%" }}>
+    <Table
+      style={{
+        margin: "auto",
+        width: "80%",
+        marginTop: "100px",
+        border: "2px solid blue",
+      }}
+    >
       <TableHead>
-        <TableRow>
-          <TableCell style={{ fontWeight: "bold" }}>Main Task</TableCell>
-          <TableCell>Actions</TableCell>
+        {loading && <LinearProgress />}
+        <TableRow style={{ justifyContent: "space-between", display: "flex" }}>
+          <TableCell style={{ fontWeight: "bold", fontSize: "30px" }}>
+            Main Task
+          </TableCell>
+          <TableCell style={{ fontWeight: "bold", fontSize: "30px" }}>
+            Actions
+          </TableCell>
         </TableRow>
+        {loading && <LinearProgress />}
       </TableHead>
       <TableBody>
         {allTask.length > 0 &&
@@ -380,4 +433,3 @@ const MainTaskList = () => {
 };
 
 export { MainTaskList };
-
