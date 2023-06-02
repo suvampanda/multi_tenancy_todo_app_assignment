@@ -75,7 +75,7 @@ const Login_FN = ({ email, password }) => {
   return async (dispatch) => {
     try {
       dispatch(login_req());
-      const url = `http://localhost:8090/bothlogin/login`;
+      const url = `https://multitenancy.onrender.com/bothlogin/login`;
       let data = await axios.post(url, {
         email,
         password,

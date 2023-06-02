@@ -24,7 +24,7 @@ try {
   const token = localStorage.getItem("login_token");
  
   const response = await fetch(
-    `http://localhost:8090/task/alltask`,
+    `https://multitenancy.onrender.com/task/alltask`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const createSubtask = (taskId, subtaskData) => {
     dispatch({ type: CREATE_SUBTASK_REQUEST });
 
     try {
-      const response = await fetch(`http://localhost:8090/task/addsubtask/${taskId}`, {
+      const response = await fetch(`https://multitenancy.onrender.com/task/addsubtask/${taskId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export const updateSubtask = (taskId, subtaskId, updatedSubtaskData) => {
     dispatch({ type: UPDATE_SUBTASK_REQUEST });
 
     try {
-      const response = await fetch(`http://localhost:8090/task/updatesubtask/${taskId}/${subtaskId}`, {
+      const response = await fetch(`https://multitenancy.onrender.com/task/updatesubtask/${taskId}/${subtaskId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export const deleteSubtask = (taskId, subtaskId) => {
   return async (dispatch) => {
     dispatch({ type: DELETE_SUBTASK_REQUEST });
     try {
-      await fetch(`http://localhost:8090/task/deletesubtask/${subtaskId}/${taskId}`, {
+      await fetch(`https://multitenancy.onrender.com/task/deletesubtask/${subtaskId}/${taskId}`, {
         method: "DELETE",
         headers: {
           Authorization: token,

@@ -213,10 +213,10 @@ const TodoList = ({ loading, page, setpage, totalPages }) => {
                     }}
                   >
                     <TableCell>{todo.id}</TableCell>
-                    <Link to={`/${encryptFn(todo?.id.toString())}`}>
-                      {" "}
+                  
+                      
                       <TableCell>{todo.title}</TableCell>
-                    </Link>
+                  
                     <TableCell colSpan={2}>
                       {todo.description
                         ? todo.description.length > 50

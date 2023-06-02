@@ -31,7 +31,7 @@ export const fetchTodos = (page = 1, limit = 5) => {
         url = "todo/alltodo";
       }
       const response = await fetch(
-        `http://localhost:8090/${url}?limit=${limit}&page=${page}`,
+        `https://multitenancy.onrender.com/${url}?limit=${limit}&page=${page}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -73,10 +73,10 @@ export const addTodo = (todo) => {
         url = "todo/addtodo";
       }
       console.log(todo, "todo before");
-      const response = await fetch(`http://localhost:8090/${url}`, {
+      const response = await fetch(`https://multitenancy.onrender.com/${url}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", 
           Authorization: token,
           Email: email,
         },
